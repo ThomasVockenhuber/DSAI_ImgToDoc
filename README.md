@@ -36,8 +36,13 @@ Nachdem das Dokument gespeichert wurde, kann der Text mit der **Extract Text** T
 ## Umgebung
 
 ## Dokument Scannen
-![image](./README_images/0.png)
-<img src="./README_images/0.png" alt="Alt Text" width="100" height="100">
+<img src="./README_images/0.png" alt="Alt Text" width="200">
+<img src="./README_images/1.png" alt="Alt Text" width="200">
+<img src="./README_images/2.png" alt="Alt Text" width="200">
+<img src="./README_images/3.png" alt="Alt Text" width="200">
+<img src="./README_images/4.png" alt="Alt Text" width="200">
+<img src="./README_images/5.png" alt="Alt Text" width="200">
+
 ### Eckenerkennung
 
 ### Artefakte Entfernen
