@@ -30,3 +30,17 @@ Sollte die Vorschau passen (Wenn die Vorschau unreinheiten enthällt werden dies
 Nachdem das Dokument gespeichert wurde, kann der Text mit der **Extract Text** Taste extrahiert werden. Dieser Text wird als .txt in dem Ordner abgespeichert. Die Sprache ist auf Deutsch eingestellt, deshalb könnte das Programm mit anderen Sprachen probleme haben. Sollte das Dokument viele Vormen haben kann das Programm diese auch fehlerhalt als Text lesen.
 
 > Alle Befehle in diesem Dokument sind für MAC-OS
+
+# Funktionsweise
+
+## Umgebung
+
+## Dokument Scannen
+
+![image](./README_images/0.png)
+
+### Eckenerkennung
+
+### Artefakte Entfernen
+
+## Text Extrahieren
