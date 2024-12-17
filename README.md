@@ -52,14 +52,14 @@ blured = cv.GaussianBlur(gray, (9, 9), 0)
 Nun werded die Ecken erkannt und vergrößert, damit kleine Lücken geschlossen werden.
 
 ```
-edged_image = cv.Canny(blured, threshold1=20, threshold2=100)
+edges = cv.Canny(blured, threshold1=20, threshold2=100)
 kernel = np.ones((15, 15), np.uint8)
-closing = cv.dilate(edged_image, kernel, iterations=2)
+ecken_vergrößert = cv.dilate(edges, kernel, iterations=2)
 ```
 
 <img src="./README_images/2.png" alt="Edge Image" width="200">
 
-Hier werden die dunkelsten Stellen des Bildes entfernt, da das zu scannende Dokument warscheinlich weiß ist, und alle anderen Objeckte entfernt werden.
+Hier werden die Hellen stellen des Bildes gefundenn und mit einem Ramen, damit kleine dunkle Flecken wie z.B. Buchstaben auch erkannt werden, Makiert.
 
 ```
 _,thr_img = cv.threshold(gray, np.mean(gray)-20, 255, cv.THRESH_BINARY)
@@ -68,7 +68,15 @@ thr_img = cv.dilate(thr_img, kernel, iterations=4)
 ```
 
 <img src="./README_images/3.png" alt="Alt Text" width="200">
+
+nun Werden alle Ecken, welche im Dunklen bereich des Bildes sind entfernt.
+
+```
+ecken = cv.bitwise_and(ecken_vergrößert, thr_img)
+```
+
 <img src="./README_images/4.png" alt="Alt Text" width="200">
+
 <img src="./README_images/5.png" alt="Alt Text" width="200">
 
 ### Eckenerkennung
