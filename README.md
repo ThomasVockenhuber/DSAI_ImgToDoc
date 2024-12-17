@@ -37,8 +37,6 @@ Nachdem das Dokument gespeichert wurde, kann der Text mit der **Extract Text** T
 
 ## Dokument Scannen
 
-![image](README_images/0.png)
-
 ### Eckenerkennung
 
 ### Artefakte Entfernen
