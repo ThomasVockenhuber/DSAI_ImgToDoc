@@ -3,9 +3,12 @@
 ## Installation
 
 Zuerst muss auf dem Lokalen rechner Python (version 3.13.0) installiert werden.
-Danach muss das venv für dieses Projekt intalliert und verwendet werden.
-`source venv/bin/activate`
-Nun kann das Projekt gestartet werden.
+Danach das Projekt.
+
+``` git clone https://github.com/ThomasVockenhuber/DSAI_ImgToDoc.git ```
+
+Nun muss das venv für dieses Projekt verwendet werden. `source venv/bin/activate`
+Das Projekt kann nun gestartet werden.
 
 ## Verwendung
 
@@ -23,4 +26,7 @@ Mit dem Taster **Turn** kann das Dokument im Uhrzeiersinn gedreht werden.
 #### Speichern
 Sollte die Vorschau passen (Wenn die Vorschau unreinheiten enthällt werden diese meist in den gespeicherten Files entfernt), kann man mit **Save** das Dokument Speichern (Dies kann einige Sekunden dauern) es wird dafür neben dem Spicherort des Bildes ein Ordner mit dem "Namen"_scan erstellt. In diesem werden nun das Dokument als .jpg und .pdf gespeichert.
 
-* Alle Befehle in diesem Dokument sind für MAC-OS
+#### Text Extrahieren
+Nachdem das Dokument gespeichert wurde, kann der Text mit der **Extract Text** Taste extrahiert werden. Dieser Text wird als .txt in dem Ordner abgespeichert. Die Sprache ist auf Deutsch eingestellt, deshalb könnte das Programm mit anderen Sprachen probleme haben. Sollte das Dokument viele Vormen haben kann das Programm diese auch fehlerhalt als Text lesen.
+
+> Alle Befehle in diesem Dokument sind für MAC-OS
