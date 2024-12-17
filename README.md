@@ -38,7 +38,7 @@ Nachdem das Dokument gespeichert wurde, kann der Text mit der **Extract Text** T
 ## Dokument Scannen
 Zuerst wird das Bild in diese Funktion geladen. Hier ist das Beispiel Bild.
 
-<img src="./README_images/0.png" alt="Alt Text" width="200">
+<img src="./README_images/0.png" alt="Bsp Image" width="200">
 
 Zuerst wird das Bild leicht verschwommen um Rauschen zu entfernen und zu Graustufen umgewandelt.
 
@@ -47,8 +47,26 @@ gray = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
 blured = cv.GaussianBlur(gray, (9, 9), 0) 
 ```
 
-<img src="./README_images/1.png" alt="Alt Text" width="200">
-<img src="./README_images/2.png" alt="Alt Text" width="200">
+<img src="./README_images/1.png" alt="Gray Image" width="200">
+
+Nun werded die Ecken erkannt und vergrößert, damit kleine Lücken geschlossen werden.
+
+```
+edged_image = cv.Canny(blured, threshold1=20, threshold2=100)
+kernel = np.ones((15, 15), np.uint8)
+closing = cv.dilate(edged_image, kernel, iterations=2)
+```
+
+<img src="./README_images/2.png" alt="Edge Image" width="200">
+
+Hier werden die dunkelsten Stellen des Bildes entfernt, da das zu scannende Dokument warscheinlich weiß ist, und alle anderen Objeckte entfernt werden.
+
+```
+_,thr_img = cv.threshold(gray, np.mean(gray)-20, 255, cv.THRESH_BINARY)
+kernel = np.ones((15, 15), np.uint8)
+thr_img = cv.dilate(thr_img, kernel, iterations=4)
+```
+
 <img src="./README_images/3.png" alt="Alt Text" width="200">
 <img src="./README_images/4.png" alt="Alt Text" width="200">
 <img src="./README_images/5.png" alt="Alt Text" width="200">
