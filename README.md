@@ -36,7 +36,13 @@ Nachdem das Dokument gespeichert wurde, kann der Text mit der **Extract Text** T
 ## Umgebung
 
 ## Dokument Scannen
+Zuerst wird das Bild in diese Funktion geladen. Hier ist das Beispiel Bild.
 <img src="./README_images/0.png" alt="Alt Text" width="200">
+Zuerst wird das Bild leicht verschwommen um Rauschen zu entfernen und zu Graustufen umgewandelt.
+
+``gray = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
+blured = cv.GaussianBlur(gray, (9, 9), 0)``
+
 <img src="./README_images/1.png" alt="Alt Text" width="200">
 <img src="./README_images/2.png" alt="Alt Text" width="200">
 <img src="./README_images/3.png" alt="Alt Text" width="200">
