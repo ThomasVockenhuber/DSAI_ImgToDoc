@@ -77,7 +77,15 @@ ecken = cv.bitwise_and(ecken_vergrößert, thr_img)
 
 <img src="./README_images/4.png" alt="Alt Text" width="200">
 
+Nun werden mögliche rechteckige Konturen des Dokuments gefunden und die, welche die größte Fläche hat wird als die Kontur des Dokuments gewählt.
+
 <img src="./README_images/5.png" alt="Alt Text" width="200">
+
+Nun wird das Bild auf eine kleinere Größe komprimiert, damit der nächste schritt nicht so lange braucht.
+
+Hier werden von den Ecken der Kontur die nächsten Punkte des Papiers gefunden, diese werden schließlich als die Ecken des Dokuments gewählt.
+
+Nun müssen die Ecken wieder auf die Orginalgrößre angepasst werden.
 
 ### Eckenerkennung
 
