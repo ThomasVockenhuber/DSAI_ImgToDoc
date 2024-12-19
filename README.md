@@ -83,9 +83,15 @@ Nun werden mögliche rechteckige Konturen des Dokuments gefunden und die, welche
 
 Nun wird das Bild auf eine kleinere Größe komprimiert, damit der nächste schritt nicht so lange braucht.
 
+<img src="./README_images/6.png" alt="Alt Text" width="200">
+
 Hier werden von den Ecken der Kontur die nächsten Punkte des Papiers gefunden, diese werden schließlich als die Ecken des Dokuments gewählt.
 
+<img src="./README_images/7.png" alt="Alt Text" width="200">
+
 Nun müssen die Ecken wieder auf die Orginalgrößre angepasst werden.
+
+<img src="./README_images/8.png" alt="Alt Text" width="200">
 
 ### Eckenerkennung
 
