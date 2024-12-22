@@ -59,7 +59,7 @@ ecken_vergrößert = cv.dilate(edges, kernel, iterations=2)
 
 <img src="./README_images/2.png" alt="Edge Image" width="200">
 
-Hier werden die Hellen stellen des Bildes gefundenn und mit einem Ramen, damit kleine dunkle Flecken wie z.B. Buchstaben auch erkannt werden, Makiert.
+Hier werden die Hellen stellen des Bildes gefundenn und mit einem dicken Ramen umramt, damit kleine dunkle Flecken wie z.B. Buchstaben nicht entfernt werden werden.
 
 ```
 _,thr_img = cv.threshold(gray, np.mean(gray)-20, 255, cv.THRESH_BINARY)
