@@ -78,14 +78,45 @@ ecken = cv.bitwise_and(ecken_vergrößert, thr_img)
 <img src="./README_images/4.png" alt="Alt Text" width="200">
 
 Nun werden mögliche rechteckige Konturen des Dokuments gefunden und die, welche die größte Fläche hat wird als die Kontur des Dokuments gewählt.
+```
+contours, _ = cv.findContours(ecken, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)
+largest_box = max(contours, key=lambda c: cv.contourArea(c), default=None)
+rect = cv.minAreaRect(largest_box)
+largest_box = np.int32(cv.boxPoints(rect))
+```
 
 <img src="./README_images/5.png" alt="Alt Text" width="200">
 
 Nun wird das Bild auf eine kleinere Größe komprimiert, damit der nächste schritt nicht so lange braucht.
+```
+img_size = (400,600)
+proportional_size = (original_img_size[1]/img_size[0], original_img_size[0]/img_size[1])
+rezised = cv.resize(ecken, img_size)
+```
 
 <img src="./README_images/6.png" alt="Alt Text" width="200">
 
 Hier werden von den Ecken der Kontur die nächsten Punkte des Papiers gefunden, diese werden schließlich als die Ecken des Dokuments gewählt.
+```
+white_points = np.argwhere(rezised == 255)
+
+for corner in largest_box:
+    min_distance = float('inf')
+
+    pointX = round(corner[0] / proportional_size[0])
+    pointY = round(corner[1] / proportional_size[1])
+
+    nearest = None
+    for white_point in white_points:
+        whiteY, whiteX = white_point
+        distance = np.sqrt((whiteX - pointX)**2 + (whiteY - pointY)**2)
+
+        if distance < min_distance:
+            min_distance = distance
+            nearest = [whiteX, whiteY]
+
+    original_points.append([round(nearest[0]*proportional_size[0]), round(nearest[1]*proportional_size[1])] )
+```
 
 <img src="./README_images/7.png" alt="Alt Text" width="200">
 

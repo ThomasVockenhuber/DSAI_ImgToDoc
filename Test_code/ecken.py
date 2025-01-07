@@ -50,18 +50,9 @@ cv.destroyAllWindows()
 # Konturen finden
 contours, _ = cv.findContours(closing, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)
 
-# Assuming 'contours' is already defined and contains the contour data
-largest_area = 0
-largest_box = None
-
-# Iterate through all contours to find the largest one
-for contour in contours:
-    area = cv.contourArea(contour)
-    if area > largest_area:
-        largest_area = area
-        rect = cv.minAreaRect(contour)
-        largest_box = cv.boxPoints(rect)
-        largest_box = np.int32(largest_box)
+largest_box = max(contours, key=lambda c: cv.contourArea(c), default=None)
+rect = cv.minAreaRect(largest_box)
+largest_box = np.int32(cv.boxPoints(rect))
 
 # Now draw only the largest box if it exists
 if largest_box is not None:
