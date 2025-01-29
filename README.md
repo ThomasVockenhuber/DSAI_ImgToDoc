@@ -115,17 +115,18 @@ for corner in largest_box:
             min_distance = distance
             nearest = [whiteX, whiteY]
 
-    original_points.append([round(nearest[0]*proportional_size[0]), round(nearest[1]*proportional_size[1])] )
+    corners.append(nearest[0], nearest[1])
 ```
 
 <img src="./README_images/7.png" alt="Alt Text" width="200">
 
 Nun müssen die Ecken wieder auf die Orginalgrößre angepasst werden.
+```
+original_corners = [round(nearest[0]*proportional_size[0]), round(nearest[1]*proportional_size[1])]
+```
 
 <img src="./README_images/8.png" alt="Alt Text" width="200">
 
-### Eckenerkennung
 
-### Artefakte Entfernen
 
 ## Text Extrahieren
