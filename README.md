@@ -10,6 +10,9 @@ Danach das Projekt.
 Nun muss das venv für dieses Projekt verwendet werden. `source venv/bin/activate`
 Das Projekt kann nun gestartet werden.
 
+Damit die Texterkennung funktioniert muss `tessdata/deu` installiert sein und im main.py file der Pfad dorthin je nach speicherort angepasst werden.
+`os.environ["TESSDATA_PREFIX"] = "/opt/homebrew/share/tessdata/"`
+
 ## Verwendung
 
 ### Starten
@@ -127,6 +130,36 @@ original_corners = [round(nearest[0]*proportional_size[0]), round(nearest[1]*pro
 
 <img src="./README_images/8.png" alt="Alt Text" width="200">
 
-
-
 ## Text Extrahieren
+
+Um den Text aus dem Gescannten Dokument zu extrahieren, muss ein Neuronales Netzwerk angewendet werden. Da das Trainieren eines solchen Modells zu kompiziert für dieses Projekt wäre habe ich mich entschieden `pytesseract` dafür zu verwenden.
+
+Dafür wird nur ein Simpler Code verwendet:
+
+```
+_, thresh = cv.threshold(img, 0, 255, cv.THRESH_BINARY + cv.THRESH_OTSU)
+text = pytesseract.image_to_string(thresh, lang="deu")
+
+pattern = r'\b[a-zA-Z0-9]\b'
+text = re.sub(pattern, '', text)
+```
+
+Zuwest wird das Bild noch angepasst um gut weiterverarbeitet zu werden dann wird der Text extrahiert. Die Sprache ist auf deutsch gestellt, sollten andere Sprachen verwendet werden müssen diese installiert und hier manuell geändert werden.
+
+Danach wird der Text gefiltert und nur Buchstaben so wie Zahlen werden akzeptiert, da sonnst of Striche und Artefakte als Text erkannt werden.
+
+## Probleme
+
+### Umgebung
+
+Ein großes Problem war es, dass je nachdem wo ich das Foto des Dokuments machte die Belichtung so wie der Hintergrund sich änderte. So stellte ich oft die Parameter zu strickt und die Erkennung funktionierte nur bei den Testfotos.
+Sollte jemand wieder so ein Projekt probieren würde ich als ersten Schritt empfehlen nicht nur ein schnelles Bild zum probieren zu machen, sondern gleich mehrere unterschiedliche und diese vorallem auch nach jeder änderung zu testen um sich Probleme am ende des Projektes zu ersparen.
+
+### Abhängigkeiten
+
+Auch war es schwierig für alle Libraries die verwendet wurden alle Abhängigkeiten zu installieren. Denn diese wurden oft erst erwähnt wenn ich mittels der Fehlernachricht nach diesen gesucht habe, nicht aber bei den schritten der Installation die im Internet vorgeschlagen wurden.
+Ich hätte mir viel Zeit ersparrt, hätte ich diese Fehlermelungen einfach Chat-GPT geschickt und gefragt was ich tun sollte. Denn im Internet findet man meist bessere Lösungen aber man braucht meist viel mehr zeit diese zu finden.
+
+### Einfachere Lösungen
+
+Die idee dieses Projektes war nicht die einfachste Lösung zu dem Problem zu finden, denn dafür gibt es warscheinlich hunderte fertige Projekte. Dieses Projekt sollte aber selbst gemacht sein, dies war aber auch ein Problem, denn viele Lösungen zu Problemen die ich hatte waren zu einfach, sie würden das Projekt mit einem Fertigen ersetzen.
