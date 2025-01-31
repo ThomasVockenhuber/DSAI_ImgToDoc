@@ -8,22 +8,52 @@ mainfame_padding = (40, 257)
 
 def get_corners(image):
 
+    color_img = image
     gray = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
     image = cv.GaussianBlur(gray, (9, 9), 0)
 
     # Kanten erkennen
-    image = cv.Canny(image, threshold1=20, threshold2=100)
+    image = cv.Canny(image, threshold1=30, threshold2=120)
     kernel = np.ones((15, 15), np.uint8)
     image = cv.dilate(image, kernel, iterations=2)
 
+
+    # Farbbereiche entfernen
+    color_img = color_img.astype(np.float32) / 255.0
+    diff_rg = np.abs(color_img[:, :, 0] - color_img[:, :, 1])  # Difference between R and G
+    diff_rb = np.abs(color_img[:, :, 0] - color_img[:, :, 2])  # Difference between R and B
+    diff_gb = np.abs(color_img[:, :, 1] - color_img[:, :, 2])  # Difference between G and B
+
+    threshold = 0.15
+    mask = (diff_rg < threshold) & (diff_rb < threshold) & (diff_gb < threshold)
+
+    mask = (mask * 255).astype(np.uint8)  
+    kernel = np.ones((10, 10), np.uint8)
+    mask = cv.dilate(mask, kernel, iterations=2) 
+    mask = (mask * 255).astype(np.uint8)
+    image = cv.bitwise_and(image, image, mask=mask)
+
+
+
     # Nicht weiße objekte entfernen
-    _,thr_img = cv.threshold(gray, np.mean(gray)-20, 255, cv.THRESH_BINARY)
-    kernel = np.ones((15, 15), np.uint8)
-    thr_img = cv.dilate(thr_img, kernel, iterations=4)
-    image = cv.bitwise_and(image, thr_img)
+    color_img = color_img.astype(np.float32) * 255.0
+    color_img = cv.GaussianBlur(color_img, (101,101),0)
+    hsv = cv.cvtColor(color_img, cv.COLOR_BGR2HSV)
+
+    lower_white = np.array([0, 0, 140])   # Adjust based on brightness
+    upper_white = np.array([255, 40, 255]) 
+
+    mask = cv.inRange(hsv, lower_white, upper_white)
+    kernel = np.ones((5, 5), np.uint8)
+    mask = cv.morphologyEx(mask, cv.MORPH_CLOSE, kernel, iterations=2)  # Close gaps
+    kernel = np.ones((100, 100), np.uint8)
+    mask = cv.morphologyEx(mask, cv.MORPH_OPEN, kernel, iterations=1)   # Remove small noise
+    image = cv.bitwise_and(image, image, mask=mask)
 
     # Konturen finden
-    contours, _ = cv.findContours(image, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)
+    kernel = np.ones((100, 100), np.uint8)  # Größeren Kern verwenden
+    cc = cv.dilate(image, kernel, iterations=2)
+    contours, _ = cv.findContours(cc, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)
 
     largest_area = 0
     largest_box = None

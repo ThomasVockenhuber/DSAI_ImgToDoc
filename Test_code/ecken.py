@@ -10,6 +10,7 @@ def distance(p1, p2):
 file_path = filedialog.askopenfilename()
 image = cv.imread(file_path)
 original_img = copy.copy(image)
+color_img = image
 
 cv.imshow('Gefilterte Eckenerkennung', image)
 cv.waitKey(0)
@@ -23,7 +24,7 @@ cv.waitKey(0)
 cv.destroyAllWindows()
 
 # Kanten erkennen
-edged_image = cv.Canny(blured, threshold1=20, threshold2=100)
+edged_image = cv.Canny(blured, threshold1=30, threshold2=120)
 #closing = cv.dilate(edged_image,(100,100),iterations = 5)
 
 kernel = np.ones((15, 15), np.uint8)  # Größeren Kern verwenden
@@ -33,7 +34,50 @@ cv.imshow('Gefilterte Eckenerkennung', closing)
 cv.waitKey(0)
 cv.destroyAllWindows()
 
-_,thr_img = cv.threshold(gray, np.mean(gray)-20, 255, cv.THRESH_BINARY)
+
+color_img = color_img.astype(np.float32) / 255.0
+
+diff_rg = np.abs(color_img[:, :, 0] - color_img[:, :, 1])  # Difference between R and G
+diff_rb = np.abs(color_img[:, :, 0] - color_img[:, :, 2])  # Difference between R and B
+diff_gb = np.abs(color_img[:, :, 1] - color_img[:, :, 2])  # Difference between G and B
+
+threshold = 0.15  # Adjust this threshold for strictness
+mask = (diff_rg < threshold) & (diff_rb < threshold) & (diff_gb < threshold)
+
+mask = (mask * 255).astype(np.uint8)  
+kernel = np.ones((10, 10), np.uint8)
+mask = cv.dilate(mask, kernel, iterations=2) 
+
+mask = (mask * 255).astype(np.uint8)
+closing = cv.bitwise_and(closing, closing, mask=mask)
+
+# Show the results
+cv.imshow("Filtered Image", closing)
+cv.waitKey(0)
+cv.destroyAllWindows()
+
+ggray = cv.GaussianBlur(gray, (255,255),0)
+
+cv.imshow("Filtered Image", ggray)
+cv.waitKey(0)
+cv.destroyAllWindows()
+
+color_img = color_img.astype(np.float32) * 255.0
+color_img = cv.GaussianBlur(color_img, (101,101),0)
+hsv = cv.cvtColor(color_img, cv.COLOR_BGR2HSV)
+
+lower_white = np.array([0, 0, 140])   # Adjust based on brightness
+upper_white = np.array([255, 40, 255]) 
+
+mask = cv.inRange(hsv, lower_white, upper_white)
+kernel = np.ones((5, 5), np.uint8)
+mask = cv.morphologyEx(mask, cv.MORPH_CLOSE, kernel, iterations=2)  # Close gaps
+kernel = np.ones((100, 100), np.uint8)
+mask = cv.morphologyEx(mask, cv.MORPH_OPEN, kernel, iterations=1)   # Remove small noise
+closing = cv.bitwise_and(closing, closing, mask=mask)
+
+"""
+_,thr_img = cv.threshold(ggray, np.mean(gray)*0.8, 255, cv.THRESH_BINARY)
 kernel = np.ones((15, 15), np.uint8)
 thr_img = cv.dilate(thr_img, kernel, iterations=4)
 
@@ -41,14 +85,22 @@ cv.imshow('Gefilterte Eckenerkennung', thr_img)
 cv.waitKey(0)
 cv.destroyAllWindows()
 
-closing = cv.bitwise_and(closing, thr_img)
+closing = cv.bitwise_and(closing, thr_img)"""
 
 cv.imshow('Gefilterte Eckenerkennung', closing)
 cv.waitKey(0)
 cv.destroyAllWindows()
 
+
 # Konturen finden
-contours, _ = cv.findContours(closing, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)
+kernel = np.ones((100, 100), np.uint8)  # Größeren Kern verwenden
+cc = cv.dilate(closing, kernel, iterations=2)
+
+cv.imshow('Gefilterte Eckenerkennung', cc)
+cv.waitKey(0)
+cv.destroyAllWindows()
+
+contours, _ = cv.findContours(cc, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)
 
 largest_box = max(contours, key=lambda c: cv.contourArea(c), default=None)
 rect = cv.minAreaRect(largest_box)

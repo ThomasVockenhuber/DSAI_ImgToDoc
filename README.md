@@ -22,7 +22,7 @@ Nachdem das venv verwendet wurde kann man mit dem Befehl `python3 main.py` das P
 ### Verwenden
 
 #### Ausschneiden
-Nun kann man über die Taste **Open Image** ein Bild ausgewählt werden. Das Programm versucht nun automatisch die Ecken des Dokuments zu erkennen, sollte die erkennung nicht funktioniert haben und der vorgezeichnente Ramen nicht stimmen kann der Ramen auch manuell eingestellt werden. Dazu klick man auf das Bild um den alten Ramen zu löschen und Beginnt bei der oberen linken Ecke die Ecken im Uhrzeigersinn mit einem Mausklick zu makieren.
+Nun kann man über die Taste **Open Image** ein Bild ausgewählt werden. Das Programm versucht nun automatisch die Ecken des Dokuments zu erkennen, sollte die erkennung nicht funktioniert haben und der vorgezeichnente Ramen nicht stimmen (Dies kann passieren wenn der Kontrast zwischen Hintergrund und Papier zu klein ist oder das Papier kein weißes Dokument ist) kann der Ramen auch manuell eingestellt werden. Dazu klick man auf das Bild um den alten Ramen zu löschen und Beginnt bei der oberen linken Ecke die Ecken im Uhrzeigersinn mit einem Mausklick zu makieren.
 Ist man nun zufrieden kann man das Dokument mit **Done Cropping** ausscheniden und Auf die Richtige größte vormen. Nun sollte man das Bild in schlechter Qualität in der Vorschau sehen, mit **Undo Cropping** kann man dies Wieder rückgängig machen und den Ramen neu Wählen.
 Mit dem Taster **Turn** kann das Dokument im Uhrzeiersinn gedreht werden.
 
@@ -38,7 +38,10 @@ Nachdem das Dokument gespeichert wurde, kann der Text mit der **Extract Text** T
 
 ## Umgebung
 
-## Dokument Scannen
+## Eckenerkennung
+
+Die Eckenerkennung ist der Schwierigste Teil des Projektes deshab habe ich mich dazu entschlossen diesen hier, mit ein paar Code Beispieben und Bildern genauer zu beschreiben.
+
 Zuerst wird das Bild in diese Funktion geladen. Hier ist das Beispiel Bild.
 
 <img src="./README_images/0.png" alt="Bsp Image" width="200">
@@ -129,6 +132,16 @@ original_corners = [round(nearest[0]*proportional_size[0]), round(nearest[1]*pro
 ```
 
 <img src="./README_images/8.png" alt="Alt Text" width="200">
+
+## Dokument Scannen
+
+Um das Dokument zu scannen wird nun das Bild so verzerrt, dass die gefundenen Ecken, die Ecken des entstehenden Bildes sind.
+
+Danach wird ein Threshold berechnet und damit die Schrift Schwarz und das Blatt Weiß gemacht. Kleine Artefakte werden davor mittels Gausschen Blurr entfernt.
+
+Weitere Kleine Artefakte, welche aber so eine größe haben, dass sie nahe an die Größe der i Punkte oder Kommas kommen, werden manuell durch einen Algorithmus entfernt.
+
+Schlussendlich wird das Dokument als JPEG und PDF abgespeichert.
 
 ## Text Extrahieren
 
